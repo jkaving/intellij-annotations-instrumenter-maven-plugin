@@ -91,6 +91,7 @@ public abstract class ThrowOnNullMethodVisitor extends MethodVisitor {
      * <p>
      * {@inheritDoc}
      */
+    @Override
     public void visitInsn(final int opcode) {
         if (shouldInclude() && opcode == Opcodes.ARETURN && isReturnNotNull && !isReturnVoidReferenceType()) {
             mv.visitInsn(Opcodes.DUP);
