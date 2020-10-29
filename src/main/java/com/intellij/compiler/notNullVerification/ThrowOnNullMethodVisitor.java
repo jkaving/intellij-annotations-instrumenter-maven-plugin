@@ -92,13 +92,11 @@ public abstract class ThrowOnNullMethodVisitor extends MethodVisitor {
      * {@inheritDoc}
      */
     public void visitInsn(final int opcode) {
-        if (shouldInclude() && opcode == Opcodes.ARETURN) {
-            if (isReturnNotNull && !isReturnVoidReferenceType()) {
-                mv.visitInsn(Opcodes.DUP);
-                final Label skipLabel = new Label();
-                mv.visitJumpInsn(Opcodes.IFNONNULL, skipLabel);
-                generateThrow(ISE_CLASS_NAME, "NotNull method " + classInfo.getName() + "." + methodName + " must not return null", skipLabel);
-            }
+        if (shouldInclude() && opcode == Opcodes.ARETURN && isReturnNotNull && !isReturnVoidReferenceType()) {
+            mv.visitInsn(Opcodes.DUP);
+            final Label skipLabel = new Label();
+            mv.visitJumpInsn(Opcodes.IFNONNULL, skipLabel);
+            generateThrow(ISE_CLASS_NAME, "NotNull method " + classInfo.getName() + "." + methodName + " must not return null", skipLabel);
         }
         mv.visitInsn(opcode);
     }
